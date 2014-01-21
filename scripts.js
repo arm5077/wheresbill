@@ -18,7 +18,7 @@ $(document).ready(function () {
 	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
 		"Sept.", "Oct.", "Nov.", "Dec."
 	];
-	$("#date").html(months[dater.getMonth()] + " " + dater.getDate()); * /
+	todaysDate = (months[dater.getMonth()] + " " + dater.getDate());
 	
 	//initialize and resize main page elements
 	resizeWindow();
@@ -91,20 +91,27 @@ $(document).ready(function () {
 							offset: (($(".timeline-container").height()) / 2) + "px"
 						});
 
-						// waypoint for leaving the entry via the bottom
+						// waypoint for entering the entry via the bottom
 						$("#event" + i).waypoint(function (direction) {
-							else {
+							if (direction == "up") {
 								map.panTo([geocode.results[0].geometry.location.lat, geocode.results[
 									0].geometry.location.lng])
 								map.setZoom(14);
 								$("#location").html(event.location);
 							}
-
-
 						}, {
 							context: '.timeline-container',
 							offset: (($(".timeline-container").height()) / 2 - $("#event" + i).height()) +
 								"px"
+						});
+						
+						// Bring event bubble to the top when mouse hovers over it
+						$(document).on("mouseenter", "#event" + i, function(e) {
+							$("#event" + i).css("z-index",999);
+						});
+						
+						$(document).on("mouseleave", "#event" + i, function(e) {
+							$("#event" + i).css("z-index",1);
 						});
 
 					});
@@ -151,5 +158,7 @@ $(document).ready(function () {
 		});
 	});
 	$(window).resize(resizeWindow);
+	
+	
 
 });
