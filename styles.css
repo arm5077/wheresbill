@@ -1,0 +1,174 @@
+h1
+{
+font-family: 'Lobster', cursive;
+font-size:50pt;	
+}
+
+	h1.small
+	{
+	font-size:16pt;
+	margin:0 0 10px 0;
+	text-align:right;
+	}
+
+h2,h3,h4,h5,h6
+{
+font-family: 'Oswald';
+}
+
+.big-text
+{
+height:230px;
+position:relative;
+}
+
+	.big-text h2
+	{
+	margin-top:0px;
+	}
+	
+	.big-text h4
+	{
+	margin-bottom:5px;
+	}
+	
+		.big-text .next
+		{
+		opacity:.8;
+		position:absolute;
+		bottom:0%;
+		}
+		
+		.big-text .next h2
+		{
+		font-size:17pt;
+		}
+
+.mapContainer
+{
+padding:10px;
+border:1px solid gray;
+}
+
+#map 
+{
+height:200px;
+}
+
+#mapBox
+{
+
+}
+
+	#mapBox .popover-content
+	{
+	padding:0;
+	}
+
+.timeline-container
+{
+height:400px; 
+overflow-y:scroll;
+overflow-x:hidden;
+padding-top:9px;
+direction: rtl;
+}
+
+.timeline
+{
+	direction: ltr;
+}
+
+.timeline-ticks ul
+{
+	padding:0;
+	margin:-9px 0 0 0;
+}
+
+	.timeline-ticks ul li
+	{
+		list-style-type:none;
+	} 
+	
+.timeline-entries
+{
+ height:3000px;
+ position:relative;
+}
+
+	.timeline-entries .list-group
+	{
+	position:relative;
+	height:100%;
+	}
+	
+		.timeline-entries .list-group .list-group-item
+		{
+		//background-color:#70ED41;
+		background-color:#90B4E0;
+		position:absolute;
+		width:100%;
+		
+		}
+
+.timeline-lines
+{
+	position:absolute;
+	top: 0;
+	width:100%;
+}
+	.timeline-lines .line
+	{
+		border-top:1px solid lightgray;
+		width:100%;
+	}
+	
+	.timeline-lines .dateline
+	{
+		position:absolute;
+		border-top:2px solid darkred;
+		width:100%;
+		height:2px;
+	}
+	
+#gif
+{
+position:absolute; 
+background: url('streetsweeper.gif') center center; 
+width:100%; 
+height:100%; 
+top:0; 
+left:0; 
+background-size:cover;
+z-index:99909999;
+}
+
+	#gif .text
+	{
+	position:absolute;
+	bottom:0;
+	background-color: rgba(255,255,255,.8);
+	padding: 0px 1% 10px;
+	width:100%;
+	text-align:center;
+	}
+
+#credit
+{
+font-size:8pt; 
+margin-top:-2px;  
+position:relative; 
+top:-4px; 
+margin-right:5px;
+display:inline-block;
+}
+	
+@media all and (max-width: 768px) 
+{
+	#rightPane{ display:none; }
+	h1 { font-size:28px	}
+	.timeline-container { height:auto; overflow-y:auto; }
+	.page-header { margin: 5px 0px 10px 0px; }
+	#credit { display:block; margin-bottom:5px; top:0; }
+	
+}
