@@ -29,7 +29,7 @@ switch( $_GET[ "operation" ] ) {
 			echo json_encode( Array(
 				 "Result" => "No current events." 
 			) );
-		}
+		} 
 		break;
 	case "getPreviousEvent":
 		$query   = mysql_query( "SELECT * FROM pedutoSchedule WHERE date = '" . date( "Y-m-d" ) . "' AND start < '" . date( "H:i:s", strtotime( "-0 hours" ) ) . "' ORDER BY start DESC" );
