@@ -45,6 +45,11 @@ The expected layout of the mySQL table:
 		<tr>
 			<td>date</td>
 			<td>date</td>
+			<td>Date of event, as per press release.</td>
+		</tr>
+		<tr>
+			<td>published</td>
+			<td>date</td>
 			<td>Date schedule was published, as per press release publish date.</td>
 		</tr>
 		 
