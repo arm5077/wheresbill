@@ -108,6 +108,7 @@ direction: rtl;
 		background-color:#90B4E0;
 		position:absolute;
 		width:100%;
+		cursor:pointer;
 		
 		}
 
@@ -170,5 +171,5 @@ display:inline-block;
 	.timeline-container { height:auto; overflow-y:auto; }
 	.page-header { margin: 5px 0px 10px 0px; }
 	#credit { display:block; margin-bottom:5px; top:0; }
-	
+	#github_ribbon { display:none; }
 }

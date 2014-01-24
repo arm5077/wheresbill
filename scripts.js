@@ -69,15 +69,13 @@ $(document).ready(function () {
 						]).addTo(map);
 						marker.on("click", function (e) {
 							$(".timeline-container").scrollTo($("#event" + i), 250, {
-								offset: -(($(".timeline-container").height() - $("#event" + i).height()) /
-									2)
+								offset: -(($(".timeline-container").height() - $("#event" + i).height()) / 2)
 							});
 							$("#location").html(event.location);
 						});
 						//zoom to map when event clicked
 						$(document).on("click", ("#event" + i), function () {
-							map.panTo([geocode.results[0].geometry.location.lat, geocode.results[
-								0].geometry.location.lng])
+							map.panTo([geocode.results[0].geometry.location.lat, geocode.results[0].geometry.location.lng])
 							map.setZoom(14);
 							$("#location").html(event.location);
 						});
@@ -86,10 +84,10 @@ $(document).ready(function () {
 						$("#event" + i).waypoint(function (direction) {
 
 							if (direction == "down") {
-								map.panTo([geocode.results[0].geometry.location.lat, geocode.results[
-									0].geometry.location.lng])
+								map.panTo([geocode.results[0].geometry.location.lat, geocode.results[0].geometry.location.lng])
 								map.setZoom(14);
 								$("#location").html(event.location);
+							//	$("#event" + i).css("z-index", 999);
 							}
 
 						}, {
@@ -104,11 +102,11 @@ $(document).ready(function () {
 									0].geometry.location.lng])
 								map.setZoom(14);
 								$("#location").html(event.location);
+							//	$("#event" + i).css("z-index", 999);
 							}
 						}, {
 							context: '.timeline-container',
-							offset: (($(".timeline-container").height()) / 2 - $("#event" + i).height()) +
-								"px"
+							offset: (($(".timeline-container").height()) / 2 - $("#event" + i).height()) + "px"
 						});
 						
 						// Bring event bubble to the top when mouse hovers over it
