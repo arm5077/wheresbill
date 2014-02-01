@@ -175,6 +175,28 @@ $(document).ready(function () {
 			offset: -(($(".timeline-container").height() - $(e.target).height()) / 2)
 		});
 	});
+	$(document).on("click", "#earlier-date", function(e) {
+		e.preventDefault();
+		// The earlier arrow never gets its class set to disabled currently, but
+		// if it did, it would behave like the later arrow.
+		if(!$(this).hasClass('disabled')) {
+			currentDisplayDate.setDate(currentDisplayDate.getDate() - 1);
+			getSchedule(currentDisplayDate);
+			// If we go earlier, then the later arrow should always be enabled.
+			$("#later-date").removeClass('disabled');
+		}
+	});
+	$(document).on("click", "#later-date", function(e) {
+		e.preventDefault();
+		if(!$(this).hasClass('disabled')) {
+			currentDisplayDate.setDate(currentDisplayDate.getDate() + 1);
+			getSchedule(currentDisplayDate);
+			// If we just moved to today's date, don't allow going any later
+			if(formatForQuery(currentDisplayDate) == formatForQuery(dater)) {
+				$("#later-date").addClass('disabled');
+			}
+		}
+	});
 	$(window).resize(resizeWindow);
 	
 	
