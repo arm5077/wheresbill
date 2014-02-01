@@ -22,6 +22,21 @@ function formatForDisplay(dateObject) {
   return (months[dateObject.getMonth()] + " " + dateObject.getDate() + ", " + dateObject.getFullYear());
 }
 
+var map;
+var layer;
+function initializeMap() {
+	if(map) {
+		map.remove();
+	}
+	layer = new L.StamenTileLayer("toner");
+	map = new L.Map("map", {
+		center: new L.LatLng(40.440625, -79.995886),
+		zoom: 12,
+		minZoom: 11
+	});
+	map.addLayer(layer);
+}
+
 function getSchedule(displayDate) {
 	$.getJSON("process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
 
@@ -38,6 +53,8 @@ function getSchedule(displayDate) {
 		} else {
 			$("#gif").hide();
 			$("#map").show();
+			// Clear the map
+			initializeMap();
 
 			//loop through each event on schedule
 			$.each(schedule, function (i, event) {
@@ -160,14 +177,7 @@ $(document).ready(function () {
 	resizeWindow();
 
 	//initalize map
-	var layer = new L.StamenTileLayer("toner");
-	var map = new L.Map("map", {
-		center: new L.LatLng(40.440625, -79.995886),
-		zoom: 12,
-		minZoom: 11
-	});
-	map.addLayer(layer);
-
+	initializeMap();
 
   var currentDisplayDate = new Date;
 	//pull scheduled events
