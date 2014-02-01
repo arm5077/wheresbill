@@ -1,7 +1,8 @@
 <?PHP
+include('config.php');
 date_default_timezone_set( 'America/New_York' );
-$db = mysql_connect( "mysql51-010.wc2.dfw1.stabletransit.com", "488441_andrew", "Fish3474" );
-mysql_select_db( "488441_andrew", $db );
+$db = mysql_connect($config['mysql_hostname'], $config['mysql_username'], $config['mysql_password']) ;
+mysql_select_db($config['mysql_database'], $db);
 switch( $_GET[ "operation" ] ) {
 
 	case "getSchedule":

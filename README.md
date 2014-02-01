@@ -52,7 +52,17 @@ The expected layout of the mySQL table:
 			<td>date</td>
 			<td>Date schedule was published, as per press release publish date.</td>
 		</tr>
-		 
+
 	</tbody>
 
 </table>
+
+## Setup
+
+To run Where's Bill, you will need to have:
+
+* apache or other web server
+* PHP enabled with that web server
+* MySQL
+
+Create a new database and edit config.php to fill in your connection details.
