@@ -28,10 +28,12 @@ function getSchedule(displayDate) {
 		//check if schedule has been posted yet
 		if (typeof schedule.Result != "undefined") {
 			//if not, show GIF
-			$("#mapBox .popover-content").append(
-				'<div id ="gif"><div class="text"><h3>No schedule uploaded yet! Guess the \'Dutes is still driving to work!</h3></div>'
-			);
+			$("#gif").show();
+			$("#map").hide();
 		} else {
+			$("#gif").hide();
+			$("#map").show();
+
 			//loop through each event on schedule
 			$.each(schedule, function (i, event) {
 				$(".timeline-entries .list-group").append(
