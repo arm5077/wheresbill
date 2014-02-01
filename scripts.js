@@ -59,8 +59,10 @@ $(document).ready(function () {
 				if( !event.location.match(/\b\d{4,5}/) ) event.location += ", Pittsburgh, Pa.";
 
 				$.getJSON(
-					"http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=" +
-					event.location + "", function (geocode) {
+					"http://maps.googleapis.com/maps/api/geocode/json", {
+						sensor: "false",
+						address: event.location
+					}, function (geocode) {
 
 						//add map marker and click function
 						var marker = L.marker([geocode.results[0].geometry.location.lat,
