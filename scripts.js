@@ -25,6 +25,11 @@ function formatForDisplay(dateObject) {
 function getSchedule(displayDate) {
 	$.getJSON("process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
 
+		// Clear the timeline
+		$(".timeline-entries .list-group .list-group-item").remove();
+		$(".timeline-lines .line").remove();
+		$(".timeline-lines .dateline").remove();
+
 		//check if schedule has been posted yet
 		if (typeof schedule.Result != "undefined") {
 			//if not, show GIF
