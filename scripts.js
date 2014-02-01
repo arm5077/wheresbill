@@ -11,28 +11,7 @@ function resizeWindow() {
 	$("#map").height(($("#map").parent().height()));
 }
 
-$(document).ready(function () {
-
-
-	//load current date
-	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
-		"Sept.", "Oct.", "Nov.", "Dec."
-	];
-	todaysDate = (months[dater.getMonth()] + " " + dater.getDate());
-	
-	//initialize and resize main page elements
-	resizeWindow();
-
-	//initalize map
-	var layer = new L.StamenTileLayer("toner");
-	var map = new L.Map("map", {
-		center: new L.LatLng(40.440625, -79.995886),
-		zoom: 12,
-		minZoom: 11
-	});
-	map.addLayer(layer);
-
-	//pull scheduled events
+function getSchedule() {
 	$.getJSON("process.php?operation=getSchedule", function (schedule) {
 
 		//check if schedule has been posted yet
@@ -151,6 +130,33 @@ $(document).ready(function () {
 
 
 	});
+
+}
+
+$(document).ready(function () {
+
+
+	//load current date
+	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
+		"Sept.", "Oct.", "Nov.", "Dec."
+	];
+	todaysDate = (months[dater.getMonth()] + " " + dater.getDate());
+
+	//initialize and resize main page elements
+	resizeWindow();
+
+	//initalize map
+	var layer = new L.StamenTileLayer("toner");
+	var map = new L.Map("map", {
+		center: new L.LatLng(40.440625, -79.995886),
+		zoom: 12,
+		minZoom: 11
+	});
+	map.addLayer(layer);
+
+
+	//pull scheduled events
+  getSchedule();
 
 	//
 	// Events
