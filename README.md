@@ -11,7 +11,7 @@ Good question. This script scrapes, stores and displays Pittsburgh Mayor Bill Pe
 - styles.css: CSS styles for display page.
 - peduto.jpg, streetsweeper.gif - Fun graphics.
 
-The expected layout of the mySQL table: 
+The expected layout of the mySQL table `pedutoSchedule`:
 
 <table>
 	<thead>
@@ -65,4 +65,6 @@ To run Where's Bill, you will need to have:
 * PHP enabled with that web server
 * MySQL
 
-Create a new database and edit config.php to fill in your connection details.
+1. Run database_setup.sql in MySQL to create a database named `wheresbill` with the schema above.
+
+2. Edit config.php to fill in your connection details.
