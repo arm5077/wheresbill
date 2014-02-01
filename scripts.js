@@ -11,8 +11,19 @@ function resizeWindow() {
 	$("#map").height(($("#map").parent().height()));
 }
 
-function getSchedule() {
-	$.getJSON("process.php?operation=getSchedule", function (schedule) {
+function formatForQuery(dateObject) {
+  return (dateObject.getFullYear() + '-' + (dateObject.getMonth() < 9 ? '0' : '') + (dateObject.getMonth() + 1) + '-' + (dateObject.getDate() < 10 ? '0' : '') + dateObject.getDate());
+}
+
+function formatForDisplay(dateObject) {
+	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
+		"Sept.", "Oct.", "Nov.", "Dec."
+	];
+  return (months[dateObject.getMonth()] + " " + dateObject.getDate() + ", " + dateObject.getFullYear());
+}
+
+function getSchedule(displayDate) {
+	$.getJSON("process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
 
 		//check if schedule has been posted yet
 		if (typeof schedule.Result != "undefined") {
@@ -128,19 +139,15 @@ function getSchedule() {
 			offset: -($(".timeline-container").height() / 2)
 		});
 
+    // update header date
+    $("#display-date").text(formatForDisplay(displayDate));
+
 
 	});
 
 }
 
 $(document).ready(function () {
-
-
-	//load current date
-	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
-		"Sept.", "Oct.", "Nov.", "Dec."
-	];
-	todaysDate = (months[dater.getMonth()] + " " + dater.getDate());
 
 	//initialize and resize main page elements
 	resizeWindow();
@@ -155,8 +162,9 @@ $(document).ready(function () {
 	map.addLayer(layer);
 
 
+  var currentDisplayDate = new Date;
 	//pull scheduled events
-  getSchedule();
+  getSchedule(currentDisplayDate);
 
 	//
 	// Events
