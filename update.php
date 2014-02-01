@@ -49,6 +49,11 @@ function strposa($haystack, $needles=array(), $offset=0) {
 	return min($chr);
 }
 
+  // See if we're starting from an empty database and need to load press
+  // releases older than today's.
+  $howManyEntriesQuery = mysql_query("SELECT COUNT(*) FROM pedutoSchedule");
+  $howManyEntriesRow = mysql_fetch_row($howManyEntriesQuery);
+  $emptyDatabase = $howManyEntriesRow[0] == "0";
 
 	$content = getURL( "http://pittsburghpa.gov/rss/feed.htm?id=81" );
 	$releases = new SimpleXMLElement($content);
@@ -171,8 +176,8 @@ function strposa($haystack, $needles=array(), $offset=0) {
 				
 					foreach($export["entries"] as $entry)
 					{
-						//only update if the press release is from today
-						if( $entry["published"] == date( 'Y-m-d') )
+						//only update if the press release is from today or if we're starting from a fresh database
+						if( $entry["published"] == date( 'Y-m-d') || $emptyDatabase)
 						{
 							if( $deletedDates[$entry["date"]] == "") {
 								$query=mysql_query("DELETE FROM pedutoSchedule WHERE date = '" . $entry["date"] . "'");
