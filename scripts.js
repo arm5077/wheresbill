@@ -56,12 +56,13 @@ $(document).ready(function () {
 				//load map coordinate
 				
 				//but first, see if it has a zipcode, which is my way of determining if it's an outside address
-				if( event.location.match(/\b\d{4,5}/) == "") event.location += ", Pittsburgh, Pa.";
-				
-				
+				if( !event.location.match(/\b\d{4,5}/) ) event.location += ", Pittsburgh, Pa.";
+
 				$.getJSON(
-					"http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=" +
-					event.location + "", function (geocode) {
+					"http://maps.googleapis.com/maps/api/geocode/json", {
+						sensor: "false",
+						address: event.location
+					}, function (geocode) {
 
 						//add map marker and click function
 						var marker = L.marker([geocode.results[0].geometry.location.lat,
