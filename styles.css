@@ -109,7 +109,13 @@ direction: rtl;
 		position:absolute;
 		width:100%;
 		cursor:pointer;
-		
+
+		}
+
+		.timeline-entries .list-group .list-group-item.current
+		{
+			background-color:#70ED41;
+
 		}
 
 .timeline-lines

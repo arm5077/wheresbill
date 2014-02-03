@@ -79,6 +79,8 @@ $(document).ready(function () {
 							map.panTo([geocode.results[0].geometry.location.lat, geocode.results[0].geometry.location.lng])
 							map.setZoom(14);
 							$("#location").html(event.location);
+							$(".list-group-item").removeClass("current");
+							$("#event" + i).addClass("current");
 						});
 
 						//add waypoint so when viewer scrolls, map changes
@@ -88,6 +90,9 @@ $(document).ready(function () {
 								map.panTo([geocode.results[0].geometry.location.lat, geocode.results[0].geometry.location.lng])
 								map.setZoom(14);
 								$("#location").html(event.location);
+								$(".list-group-item").removeClass("current");
+								$("#event" + i).addClass("current");
+
 							//	$("#event" + i).css("z-index", 999);
 							}
 
@@ -103,6 +108,9 @@ $(document).ready(function () {
 									0].geometry.location.lng])
 								map.setZoom(14);
 								$("#location").html(event.location);
+								$(".list-group-item").removeClass("current");
+								$("#event" + i).addClass("current");
+
 							//	$("#event" + i).css("z-index", 999);
 							}
 						}, {
