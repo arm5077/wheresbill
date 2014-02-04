@@ -72,7 +72,6 @@ function strposa($haystack, $needles=array(), $offset=0) {
 			//clear out inconsistent spacing between schedule entries, 
 			//and split schedule into an array of entries
 			$schedule = str_replace("<p><br />\n<strong>", "<p><strong>", $schedule);
-			$schedule = str_replace("<div><strong>", "<p><strong>", $schedule);
 			$scheduleArray = explode( "<p><strong>", $schedule); 
 			
 			for($j=0; $j < count($scheduleArray); $j++)
