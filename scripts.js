@@ -11,37 +11,51 @@ function resizeWindow() {
 	$("#map").height(($("#map").parent().height()));
 }
 
-$(document).ready(function () {
+function formatForQuery(dateObject) {
+  return (dateObject.getFullYear() + '-' + (dateObject.getMonth() < 9 ? '0' : '') + (dateObject.getMonth() + 1) + '-' + (dateObject.getDate() < 10 ? '0' : '') + dateObject.getDate());
+}
 
-
-	//load current date
+function formatForDisplay(dateObject) {
 	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
 		"Sept.", "Oct.", "Nov.", "Dec."
 	];
-	todaysDate = (months[dater.getMonth()] + " " + dater.getDate());
-	
-	//initialize and resize main page elements
-	resizeWindow();
+  return (months[dateObject.getMonth()] + " " + dateObject.getDate() + ", " + dateObject.getFullYear());
+}
 
-	//initalize map
-	var layer = new L.StamenTileLayer("toner");
-	var map = new L.Map("map", {
+var map;
+var layer;
+function initializeMap() {
+	if(map) {
+		map.remove();
+	}
+	layer = new L.StamenTileLayer("toner");
+	map = new L.Map("map", {
 		center: new L.LatLng(40.440625, -79.995886),
 		zoom: 12,
 		minZoom: 11
 	});
 	map.addLayer(layer);
+}
 
-	//pull scheduled events
-	$.getJSON("process.php?operation=getSchedule", function (schedule) {
+function getSchedule(displayDate) {
+	$.getJSON("process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
+
+		// Clear the timeline
+		$(".timeline-entries .list-group .list-group-item").remove();
+		$(".timeline-lines .line").remove();
+		$(".timeline-lines .dateline").remove();
 
 		//check if schedule has been posted yet
 		if (typeof schedule.Result != "undefined") {
 			//if not, show GIF
-			$("#mapBox .popover-content").append(
-				'<div id ="gif"><div class="text"><h3>No schedule uploaded yet! Guess the \'Dutes is still driving to work!</h3></div>'
-			);
+			$("#gif").show();
+			$("#map").hide();
 		} else {
+			$("#gif").hide();
+			$("#map").show();
+			// Clear the map
+			initializeMap();
+
 			//loop through each event on schedule
 			$.each(schedule, function (i, event) {
 				$(".timeline-entries .list-group").append(
@@ -158,8 +172,25 @@ $(document).ready(function () {
 			offset: -($(".timeline-container").height() / 2)
 		});
 
+    // update header date
+    $("#display-date").text(formatForDisplay(displayDate));
+
 
 	});
+
+}
+
+$(document).ready(function () {
+
+	//initialize and resize main page elements
+	resizeWindow();
+
+	//initalize map
+	initializeMap();
+
+  var currentDisplayDate = new Date;
+	//pull scheduled events
+  getSchedule(currentDisplayDate);
 
 	//
 	// Events
@@ -169,6 +200,28 @@ $(document).ready(function () {
 		$(".timeline-container").scrollTo($(e.target), 500, {
 			offset: -(($(".timeline-container").height() - $(e.target).height()) / 2)
 		});
+	});
+	$(document).on("click", "#earlier-date", function(e) {
+		e.preventDefault();
+		// The earlier arrow never gets its class set to disabled currently, but
+		// if it did, it would behave like the later arrow.
+		if(!$(this).hasClass('disabled')) {
+			currentDisplayDate.setDate(currentDisplayDate.getDate() - 1);
+			getSchedule(currentDisplayDate);
+			// If we go earlier, then the later arrow should always be enabled.
+			$("#later-date").removeClass('disabled');
+		}
+	});
+	$(document).on("click", "#later-date", function(e) {
+		e.preventDefault();
+		if(!$(this).hasClass('disabled')) {
+			currentDisplayDate.setDate(currentDisplayDate.getDate() + 1);
+			getSchedule(currentDisplayDate);
+			// If we just moved to today's date, don't allow going any later
+			if(formatForQuery(currentDisplayDate) == formatForQuery(dater)) {
+				$("#later-date").addClass('disabled');
+			}
+		}
 	});
 	$(window).resize(resizeWindow);
 	

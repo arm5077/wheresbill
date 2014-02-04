@@ -6,7 +6,12 @@ mysql_select_db($config['mysql_database'], $db);
 switch( $_GET[ "operation" ] ) {
 
 	case "getSchedule":
-		$query   = mysql_query( "SELECT * FROM pedutoSchedule WHERE date = '" . date( "Y-m-d" ) . "'" );
+		$requestedDate = date( "Y-m-d" ); // Default to today
+		if( $_GET["date"] ) {
+			$requestedDate = $_GET["date"];
+		}
+
+		$query   = mysql_query( "SELECT * FROM pedutoSchedule WHERE date = '" . $requestedDate . "'" );
 		$results = mysql_fetch_assoc( $query );
 		if( $results != FALSE ) {
 			$export = Array();
