@@ -3,12 +3,13 @@ const timeline_hours_end = 23;
 dater = new Date;
 
 function resizeWindow() {
-	$(".timeline-container").height(($(window).height() - $("#page-title").height()) *
-		.9);
+	$(".timeline-container").height(($(window).height() - $("#page-title").height() - $("#header").height() ) *
+		.8);
 	$("#mapBox").height($(".timeline-container").height());
-	$("#mapBox .popover-content").height($("#mapBox").outerHeight() - $(
-		".popover-title").outerHeight());
-	$("#map").height(($("#map").parent().height()));
+	// OK, I know I shouldn't have "37" below. But that's the height of the popovers menu bar. I'm tired of trying to time things
+	// dynamically but if I ever get my act together, I'm trying to compute $(".popover-title").outerHeight()
+	$("#mapBox .popover-content").height($("#mapBox").outerHeight() - 37);
+	$("#map").height(($("#map").parent().innerHeight()));
 }
 
 function formatForQuery(dateObject) {
@@ -210,6 +211,8 @@ $(document).ready(function () {
 			getSchedule(currentDisplayDate);
 			// If we go earlier, then the later arrow should always be enabled.
 			$("#later-date").removeClass('disabled');
+			// Destroy waypoints on timeline so new ones can be created
+			$.waypoints('destroy')
 		}
 	});
 	$(document).on("click", "#later-date", function(e) {
@@ -220,6 +223,8 @@ $(document).ready(function () {
 			// If we just moved to today's date, don't allow going any later
 			if(formatForQuery(currentDisplayDate) == formatForQuery(dater)) {
 				$("#later-date").addClass('disabled');
+			// Destroy waypoints on timeline so new ones can be created
+			$.waypoints('destroy')
 			}
 		}
 	});

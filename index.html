@@ -109,13 +109,30 @@
 			</div>
 		</div>
 
+		<div class="row" id = "header">
+			<div class="col-md-12">
+				<nav class="navbar navbar-default" role="navigation">
+					<div class="container-fluid">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+					</button>
+						<a class="navbar-brand" href="#" id="display-date"></a>
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav" >
+							<li class="" id="earlier-date"><a href="#">Previous day</a></li>
+							<li class="disabled" id="later-date"><a href="#">Next day</a></li>
+						</uL>
+					</div>
+				</nav>
+			</div>
+		</div>
+		
 		<div class="row">
 			<div class="col-md-5">
-				<h2 id="date-header" class="col-md-offset-2 col-xs-offset-3">
-					<a href="#" id="earlier-date">&#9668;</a>
-					<span id="display-date"></span>
-					<a href="#" id="later-date" class="disabled">&#9658;</a>
-				</h2>
 				<div class="timeline-container">
 					<div class="row timeline">
 						<div class="col-md-2 col-xs-3 timeline-ticks">
@@ -184,8 +201,7 @@
 			</div>
 
 			<div class="col-md-7" id="rightPane">
-				<div class="popover right fade in" id="mapBox" style=
-				"display: block; width:100%; max-width:100%; max-height:2000">
+				<div class="popover right fade in" id="mapBox">
 					<div class="arrow"></div>
 
 					<h3 class="popover-title" id="location"></h3>
