@@ -1,12 +1,16 @@
 <?PHP
-include('config.php');
 date_default_timezone_set( 'America/New_York' );
-$db = mysql_connect($config['mysql_hostname'], $config['mysql_username'], $config['mysql_password']) ;
-mysql_select_db($config['mysql_database'], $db);
+$db = mysql_connect( "mysql51-010.wc2.dfw1.stabletransit.com", "488441_andrew", "Fish3474" );
+mysql_select_db( "488441_andrew", $db );
 switch( $_GET[ "operation" ] ) {
 
 	case "getSchedule":
-		$query   = mysql_query( "SELECT * FROM pedutoSchedule WHERE date = '" . date( "Y-m-d" ) . "'" );
+		$requestedDate = date( "Y-m-d" ); // Default to today
+		if( $_GET["date"] ) {
+			$requestedDate = $_GET["date"];
+		}
+
+		$query   = mysql_query( "SELECT * FROM pedutoSchedule WHERE date = '" . $requestedDate . "'" );
 		$results = mysql_fetch_assoc( $query );
 		if( $results != FALSE ) {
 			$export = Array();

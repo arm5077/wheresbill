@@ -1,12 +1,12 @@
 <?PHP
-include('config.php');
+
 date_default_timezone_set('America/New_York');
 
 $scheduleArray=Array();
 
 
-$db = mysql_connect($config['mysql_hostname'], $config['mysql_username'], $config['mysql_password']) ;
-mysql_select_db($config['mysql_database'], $db);
+$db = mysql_connect("mysql51-010.wc2.dfw1.stabletransit.com", "488441_andrew", "Fish3474") ;
+mysql_select_db("488441_andrew", $db);
 
 function decode_entities($text) {
     $text= html_entity_decode($text,ENT_QUOTES,"ISO-8859-1"); #NOTE: UTF-8 does not work!
@@ -49,11 +49,6 @@ function strposa($haystack, $needles=array(), $offset=0) {
 	return min($chr);
 }
 
-  // See if we're starting from an empty database and need to load press
-  // releases older than today's.
-  $howManyEntriesQuery = mysql_query("SELECT COUNT(*) FROM pedutoSchedule");
-  $howManyEntriesRow = mysql_fetch_row($howManyEntriesQuery);
-  $emptyDatabase = $howManyEntriesRow[0] == "0";
 
 	$content = getURL( "http://pittsburghpa.gov/rss/feed.htm?id=81" );
 	$releases = new SimpleXMLElement($content);
@@ -177,8 +172,8 @@ function strposa($haystack, $needles=array(), $offset=0) {
 				
 					foreach($export["entries"] as $entry)
 					{
-						//only update if the press release is from today or if we're starting from a fresh database
-						if( $entry["published"] == date( 'Y-m-d') || $emptyDatabase)
+						//only update if the press release is from today
+						if( $entry["published"] == date( 'Y-m-d') )
 						{
 							if( $deletedDates[$entry["date"]] == "") {
 								$query=mysql_query("DELETE FROM pedutoSchedule WHERE date = '" . $entry["date"] . "'");
