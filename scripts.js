@@ -11,51 +11,37 @@ function resizeWindow() {
 	$("#map").height(($("#map").parent().height()));
 }
 
-function formatForQuery(dateObject) {
-  return (dateObject.getFullYear() + '-' + (dateObject.getMonth() < 9 ? '0' : '') + (dateObject.getMonth() + 1) + '-' + (dateObject.getDate() < 10 ? '0' : '') + dateObject.getDate());
-}
+$(document).ready(function () {
 
-function formatForDisplay(dateObject) {
+
+	//load current date
 	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
 		"Sept.", "Oct.", "Nov.", "Dec."
 	];
-  return (months[dateObject.getMonth()] + " " + dateObject.getDate() + ", " + dateObject.getFullYear());
-}
+	todaysDate = (months[dater.getMonth()] + " " + dater.getDate());
+	
+	//initialize and resize main page elements
+	resizeWindow();
 
-var map;
-var layer;
-function initializeMap() {
-	if(map) {
-		map.remove();
-	}
-	layer = new L.StamenTileLayer("toner");
-	map = new L.Map("map", {
+	//initalize map
+	var layer = new L.StamenTileLayer("toner");
+	var map = new L.Map("map", {
 		center: new L.LatLng(40.440625, -79.995886),
 		zoom: 12,
 		minZoom: 11
 	});
 	map.addLayer(layer);
-}
 
-function getSchedule(displayDate) {
-	$.getJSON("process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
-
-		// Clear the timeline
-		$(".timeline-entries .list-group .list-group-item").remove();
-		$(".timeline-lines .line").remove();
-		$(".timeline-lines .dateline").remove();
+	//pull scheduled events
+	$.getJSON("process.php?operation=getSchedule", function (schedule) {
 
 		//check if schedule has been posted yet
 		if (typeof schedule.Result != "undefined") {
 			//if not, show GIF
-			$("#gif").show();
-			$("#map").hide();
+			$("#mapBox .popover-content").append(
+				'<div id ="gif"><div class="text"><h3>No schedule uploaded yet! Guess the \'Dutes is still driving to work!</h3></div>'
+			);
 		} else {
-			$("#gif").hide();
-			$("#map").show();
-			// Clear the map
-			initializeMap();
-
 			//loop through each event on schedule
 			$.each(schedule, function (i, event) {
 				$(".timeline-entries .list-group").append(
@@ -70,12 +56,13 @@ function getSchedule(displayDate) {
 				//load map coordinate
 				
 				//but first, see if it has a zipcode, which is my way of determining if it's an outside address
-				if( event.location.match(/\b\d{4,5}/) == "") event.location += ", Pittsburgh, Pa.";
-				
-				
+				if( !event.location.match(/\b\d{4,5}/) ) event.location += ", Pittsburgh, Pa.";
+
 				$.getJSON(
-					"http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=" +
-					event.location + "", function (geocode) {
+					"http://maps.googleapis.com/maps/api/geocode/json", {
+						sensor: "false",
+						address: event.location
+					}, function (geocode) {
 
 						//add map marker and click function
 						var marker = L.marker([geocode.results[0].geometry.location.lat,
@@ -92,6 +79,8 @@ function getSchedule(displayDate) {
 							map.panTo([geocode.results[0].geometry.location.lat, geocode.results[0].geometry.location.lng])
 							map.setZoom(14);
 							$("#location").html(event.location);
+							$(".list-group-item").removeClass("current");
+							$("#event" + i).addClass("current");
 						});
 
 						//add waypoint so when viewer scrolls, map changes
@@ -101,6 +90,9 @@ function getSchedule(displayDate) {
 								map.panTo([geocode.results[0].geometry.location.lat, geocode.results[0].geometry.location.lng])
 								map.setZoom(14);
 								$("#location").html(event.location);
+								$(".list-group-item").removeClass("current");
+								$("#event" + i).addClass("current");
+
 							//	$("#event" + i).css("z-index", 999);
 							}
 
@@ -116,6 +108,9 @@ function getSchedule(displayDate) {
 									0].geometry.location.lng])
 								map.setZoom(14);
 								$("#location").html(event.location);
+								$(".list-group-item").removeClass("current");
+								$("#event" + i).addClass("current");
+
 							//	$("#event" + i).css("z-index", 999);
 							}
 						}, {
@@ -163,25 +158,8 @@ function getSchedule(displayDate) {
 			offset: -($(".timeline-container").height() / 2)
 		});
 
-    // update header date
-    $("#display-date").text(formatForDisplay(displayDate));
-
 
 	});
-
-}
-
-$(document).ready(function () {
-
-	//initialize and resize main page elements
-	resizeWindow();
-
-	//initalize map
-	initializeMap();
-
-  var currentDisplayDate = new Date;
-	//pull scheduled events
-  getSchedule(currentDisplayDate);
 
 	//
 	// Events
@@ -191,28 +169,6 @@ $(document).ready(function () {
 		$(".timeline-container").scrollTo($(e.target), 500, {
 			offset: -(($(".timeline-container").height() - $(e.target).height()) / 2)
 		});
-	});
-	$(document).on("click", "#earlier-date", function(e) {
-		e.preventDefault();
-		// The earlier arrow never gets its class set to disabled currently, but
-		// if it did, it would behave like the later arrow.
-		if(!$(this).hasClass('disabled')) {
-			currentDisplayDate.setDate(currentDisplayDate.getDate() - 1);
-			getSchedule(currentDisplayDate);
-			// If we go earlier, then the later arrow should always be enabled.
-			$("#later-date").removeClass('disabled');
-		}
-	});
-	$(document).on("click", "#later-date", function(e) {
-		e.preventDefault();
-		if(!$(this).hasClass('disabled')) {
-			currentDisplayDate.setDate(currentDisplayDate.getDate() + 1);
-			getSchedule(currentDisplayDate);
-			// If we just moved to today's date, don't allow going any later
-			if(formatForQuery(currentDisplayDate) == formatForQuery(dater)) {
-				$("#later-date").addClass('disabled');
-			}
-		}
 	});
 	$(window).resize(resizeWindow);
 	
