@@ -178,6 +178,18 @@ top:-4px;
 margin-right:5px;
 display:inline-block;
 }
+
+#otherCredits
+{
+color: #428bca;
+text-decoration: none;
+}	
+
+	#otherCredits:hover
+	{
+	color: #2a6496;
+	text-decoration: underline;
+	}
 	
 @media all and (max-width: 768px) 
 {

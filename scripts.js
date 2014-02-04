@@ -225,6 +225,9 @@ $(document).ready(function () {
 	});
 	$(window).resize(resizeWindow);
 	
+	$("#otherCredits").click(function(){
+		$(this).html("<a href='https://github.com/carols10cents'>carols10cents</a>")
+	});	
 	
 
 });
