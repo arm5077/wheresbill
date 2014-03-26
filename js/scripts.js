@@ -50,7 +50,7 @@ function initializeMap() {
 }
 
 function getSchedule(displayDate) {
-	$.getJSON("process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
+	$.getJSON("php/process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
 		// Clear the timeline
 		$(".timeline-entries .list-group .list-group-item").remove();
 		$(".timeline-lines .line").remove();
