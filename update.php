@@ -75,8 +75,11 @@ function strposa($haystack, $needles=array(), $offset=0) {
 			$export= Array();
 				
 			//clear out inconsistent spacing between schedule entries, 
-			//and split schedule into an array of entries
+			//and split schedule into an array of entries.
+			//I know I should be using regular expressions here. 
 			$schedule = str_replace("<p><br />\n<strong>", "<p><strong>", $schedule);
+			$schedule = str_replace("<p><br />\n<strong>", "<p><strong>", $schedule);
+			$schedule = str_replace('<div style="font-family: arial, sans-serif; font-size: 13px;"><strong>', "<p><strong>", $schedule);
 			$scheduleArray = explode( "<p><strong>", $schedule); 
 			
 			for($j=0; $j < count($scheduleArray); $j++)
@@ -115,7 +118,7 @@ function strposa($haystack, $needles=array(), $offset=0) {
 								//format time string and explode into before and after
 								$time = str_replace("Time: ", "", $lineArray[$k]);
 								$time = str_replace("Time ", "", $time);
-								$time = explode(" - ", $time);
+								$time = explode("-", $time);
 								
 								//include unformatted time for debugging purposes
 								$tempArray["rawstart"] = $time[0];

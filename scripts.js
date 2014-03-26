@@ -6,7 +6,7 @@ function resizeWindow() {
 	$(".timeline-container").height(($(window).height() - $("#page-title").height() - $("#header").height() ) *
 		.8);
 	$("#mapBox").height($(".timeline-container").height());
-	// OK, I know I shouldn't have "37" below. But that's the height of the popovers menu bar. I'm tired of trying to time things
+	// OK, I know I shouldn't have "35" below. But that's the height of the popovers menu bar. I'm tired of trying to time things
 	// dynamically but if I ever get my act together, I'm trying to compute $(".popover-title").outerHeight()
 	$("#mapBox .popover-content").height($("#mapBox").outerHeight() - 37);
 	$("#map").height(($("#map").parent().innerHeight()));
@@ -20,7 +20,18 @@ function formatForDisplay(dateObject) {
 	months = ["Jan.", "Feb.", "Mar.", "April", "May", "June", "July", "Aug.",
 		"Sept.", "Oct.", "Nov.", "Dec."
 	];
-  return (months[dateObject.getMonth()] + " " + dateObject.getDate() + ", " + dateObject.getFullYear());
+  return (months[dateObject.getMonth()] + " " + (dateObject.getDate()) + ", " + dateObject.getFullYear());
+}
+
+function getQueryVariable(variable) {
+	var query = window.location.search.substring(1);
+	//query = query.split("?")[1];
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+		if(pair[0] == variable){return pair[1];}
+	}
+	return(false);
 }
 
 var map;
@@ -40,7 +51,6 @@ function initializeMap() {
 
 function getSchedule(displayDate) {
 	$.getJSON("process.php?operation=getSchedule&date=" + formatForQuery(displayDate), function (schedule) {
-
 		// Clear the timeline
 		$(".timeline-entries .list-group .list-group-item").remove();
 		$(".timeline-lines .line").remove();
@@ -165,11 +175,20 @@ function getSchedule(displayDate) {
 		$(".timeline-lines .line").last().height(1);
 
 		// add "dateline"
-		$(".timeline-lines").append("<div class='dateline' style='top: " + ((dater.getHours() +
-			dater.getMinutes() / 60) / 24 * 100) + "%'></div>");
+		timer = ((dater.getHours() + dater.getMinutes() / 60) / 23 * 100);
+		console.log(dater.getMinutes());
+		$(".timeline-lines").append("<div class='dateline' style='top: " + timer + "%'></div>");
 
-		// automatically scroll to dateline on load
-		$(".timeline-container").scrollTo($(".dateline"), 1000, {
+		// scroll to time in parameter or, barring that, to the dateline
+		// If there's a time parameter, let's have the window scroll to that. Otherwise, we'll use the dateline.
+		if( time = getQueryVariable("time") ) 
+		{
+			timer = ( parseInt(time.substring(0,2)) + parseInt(time.substring(2,4)) / 60 ) / 23 * 100;
+		}
+		// This addresses a bug in jquery.scrollTo that doesn't allow you to use offsets if you specify a percentage
+		// for the target location. Not ideal but it works for now.
+		$(".timeline-lines").append("<div class='scrollLine' style='position:absolute; top: " + timer + "%'></div>");
+		$(".timeline-container").scrollTo($(".scrollLine"), 1000, {
 			offset: -($(".timeline-container").height() / 2)
 		});
 
@@ -189,10 +208,20 @@ $(document).ready(function () {
 	//initalize map
 	initializeMap();
 
-  var currentDisplayDate = new Date;
+  
+	
+	
 	//pull scheduled events
-  getSchedule(currentDisplayDate);
+	if( currentDisplayDate = getQueryVariable("date") )
+	{	
+		
+		getSchedule(currentDisplayDate = new Date(currentDisplayDate+"T00:00:00-0400"));
+		$("li.disabled").removeClass("disabled"); //get rid of the disabled "Next day" if we're going to a previous day	
+	}
+	else getSchedule(currentDisplayDate = new Date());
 
+  
+  
 	//
 	// Events
 	//
