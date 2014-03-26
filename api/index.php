@@ -1,6 +1,6 @@
 <?PHP
 date_default_timezone_set( 'America/New_York' );
-include('../config.php');
+include('../php/config.php');
 
 $db = mysql_connect($config['mysql_hostname'], $config['mysql_username'], $config['mysql_password']) ;
 mysql_select_db($config['mysql_database'], $db);
