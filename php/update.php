@@ -80,6 +80,7 @@ function strposa($haystack, $needles=array(), $offset=0) {
 			$schedule = str_replace("<p><br />\n<strong>", "<p><strong>", $schedule);
 			$schedule = str_replace("<p><br />\n<strong>", "<p><strong>", $schedule);
 			$schedule = str_replace('<div style="font-family: arial, sans-serif; font-size: 13px;"><strong>', "<p><strong>", $schedule);
+			$schedule = str_replace('<strong><span style="font-family: arial, sans-serif; font-size: 13px;">', "<p><strong>", $schedule);
 			$scheduleArray = explode( "<p><strong>", $schedule); 
 			
 			for($j=0; $j < count($scheduleArray); $j++)
